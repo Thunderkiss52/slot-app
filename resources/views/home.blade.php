@@ -1,18 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="banner text-center py-5 mb-4">
-        <h1 class="display-5 text-white">Бонус за регистрацию</h1>
-        <a href="#" class="btn btn-warning">Зарегистрироваться сейчас</a>
+    <div class="banner-slider">
+        <div class="banner-slider__slides">
+            <div class="banner-slider__slide">
+                <div class="banner">
+                    <h1 class="banner__title">Бонус за регистрацию</h1>
+                    <p class="banner__text">до 500€ + 200 FS</p>
+                    <a href="#" class="banner__button">Зарегистрироваться сейчас</a>
+                </div>
+            </div>
+            <div class="banner-slider__slide">
+                <div class="banner banner--second">
+                    <h1 class="banner__title">Еженедельный кэшбэк</h1>
+                    <p class="banner__text">до 15% на все игры</p>
+                    <a href="#" class="banner__button">Узнать больше</a>
+                </div>
+            </div>
+            <div class="banner-slider__slide">
+                <div class="banner banner--third">
+                    <h1 class="banner__title">Турнир на миллион</h1>
+                    <p class="banner__text">Участвуй и выигрывай!</p>
+                    <a href="#" class="banner__button">Присоединиться</a>
+                </div>
+            </div>
+        </div>
+        <button class="banner-slider__control banner-slider__control--prev">❮</button>
+        <button class="banner-slider__control banner-slider__control--next">❯</button>
     </div>
 
-    <div class="card bg-dark text-white mb-4">
-        <div class="card-body">
-            <h5 class="card-title">Добавить новый слот</h5>
+    <section class="slot-section">
+        <h2 class="slot-section__title">Добавить новый слот</h2>
+        <div class="slot-section__form">
             <form action="{{ route('slots.store') }}" method="POST">
                 @csrf
                 @if ($errors->any())
-                    <div class="alert alert-danger">
+                    <div class="slot-section__error">
                         <ul>
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -20,34 +43,34 @@
                         </ul>
                     </div>
                 @endif
-                <div class="mb-3">
-                    <label for="name" class="form-label">Название</label>
-                    <input type="text" name="name" id="name" class="form-control bg-secondary text-white" placeholder="Название слота" required>
+                <div class="slot-section__field">
+                    <label for="name" class="slot-section__label">Название</label>
+                    <input type="text" name="name" id="name" class="slot-section__input" placeholder="Название слота" required>
                 </div>
-                <div class="mb-3">
-                    <label for="slug" class="form-label">Слаг</label>
-                    <input type="text" name="slug" id="slug" class="form-control bg-secondary text-white" placeholder="Слаг слота" required>
+                <div class="slot-section__field">
+                    <label for="slug" class="slot-section__label">Слаг</label>
+                    <input type="text" name="slug" id="slug" class="slot-section__input" placeholder="Слаг слота" required>
                 </div>
-                <div class="mb-3">
-                    <label for="image_url" class="form-label">URL изображения</label>
-                    <input type="url" name="image_url" id="image_url" class="form-control bg-secondary text-white" placeholder="https://example.com/image.jpg" required>
+                <div class="slot-section__field">
+                    <label for="image_url" class="slot-section__label">URL изображения</label>
+                    <input type="url" name="image_url" id="image_url" class="slot-section__input" placeholder="https://example.com/image.jpg" required>
                 </div>
-                <button type="submit" class="btn btn-warning">Добавить</button>
+                <button type="submit" class="slot-section__submit">Добавить</button>
             </form>
         </div>
-    </div>
+    </section>
 
-    <div class="row">
+    <div class="slot-grid">
         @foreach($slots as $slot)
-            <div class="col-md-2 mb-4">
-                <div class="card bg-dark border-light slot-card">
-                    <img src="{{ $slot->image_url }}" class="card-img-top" alt="{{ $slot->name }}" style="height: 150px; object-fit: cover;">
-                    <div class="card-body p-2">
-                        <h6 class="card-title text-white">{{ $slot->name }}</h6>
+            <div class="slot-grid__item">
+                <div class="slot-card">
+                    <img src="{{ $slot->image_url }}" alt="{{ $slot->name }}" class="slot-card__image">
+                    <div class="slot-card__body">
+                        <h3 class="slot-card__title">{{ $slot->name }}</h3>
                         <form action="{{ route('slots.destroy', $slot->id) }}" method="POST" onsubmit="return confirm('Удалить слот?');">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm w-100">Удалить</button>
+                            <button type="submit" class="slot-card__delete">Удалить</button>
                         </form>
                     </div>
                 </div>
